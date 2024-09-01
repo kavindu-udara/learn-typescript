@@ -1,58 +1,73 @@
 "use strict";
-let stringArr = ['one', 'hey', 'dave'];
-let guitars = ['Start', 'Les Paul', 5150];
-let mixedData = ['EVH', 1984, true];
-stringArr[0] = '42';
-stringArr.push('hey');
-guitars[0] = 10;
-guitars.unshift('true');
-// guitars = stringArr;
-// guitars = mixedData;
-let test = [];
-let bands = [];
-bands.push('Van Halen');
-// tuples
-let myTuple = ['Dave', 42, true];
-let mixed = ['John', 1, false];
-// myTuple[0] = 42;
-// ! Objects
-let myObj;
-myObj = [];
-console.log(typeof myObj);
-myObj = bands;
-myObj = {};
-const exampleObj = {
-    prop1: 'Kavindu',
-    prop2: true,
+// Type Aliases
+// interface PostId = stringOrNumber
+// ! Literal types
+let myName;
+// myName = 'Kavindu'
+let userName;
+userName = 'Geemi';
+// userName = 'test';
+// DRY - Don't Repeat Yourself
+// ! functions
+const add = (a, b) => {
+    return a + b;
 };
-exampleObj.prop1 = 'false';
-exampleObj.prop2 = false;
-let evh = {
-    name: 'Kavindu',
-    active: false,
-    albums: [1984, 5150, 'OUB12']
+const logMsg = (message) => {
+    console.log(message);
 };
-let JP = {
-    name: 'Kavindu',
-    albums: ['I', "II", 'IV']
+logMsg('Hellow');
+logMsg(add(2, 4));
+// logMsg(add('a', 5));
+let subtract = function (c, d) {
+    return c - d;
 };
-evh = JP;
-// make property optional - prop?
-const greetGuitarist = (guitarist) => {
-    if (guitarist.name) {
-        return `Hello ${guitarist.name.toUpperCase()}!`;
+// interface mathFunction { (a: number, b: number): number };
+let multiply = function (c, d) {
+    return c * d;
+};
+logMsg(multiply(2, 2));
+// ! Optional parameters
+const addAll = (a, b, c) => {
+    if (typeof c !== 'undefined') {
+        return a + b + c;
     }
-    return 'Hellow';
-    // return `Hello ${guitarist.name?.toUpperCase()}!`;
+    return a + b;
 };
-// console.log(greetGuitarist(JP));
-// ! Enums
-var Grade;
-(function (Grade) {
-    Grade[Grade["U"] = 1] = "U";
-    Grade[Grade["D"] = 2] = "D";
-    Grade[Grade["C"] = 3] = "C";
-    Grade[Grade["B"] = 4] = "B";
-    Grade[Grade["A"] = 5] = "A";
-})(Grade || (Grade = {}));
-console.log(Grade.U);
+// ! default param value
+const sumAll = (a = 10, b, c = 2) => {
+    return a + b + c;
+};
+// logMsg(addAll(2, 3, 7));
+// logMsg(addAll(2, 3));
+// logMsg(sumAll(2, 3));
+// logMsg(sumAll(undefined, 3));
+// ! Rest Parameters
+const total = (a, ...nums) => {
+    return a + nums.reduce((prev, curr) => prev + curr);
+};
+logMsg(total(1, 2));
+// ! never type
+const createError = (errMsg) => {
+    throw new Error(errMsg);
+};
+const infinite = () => {
+    let i = 1;
+    while (true) {
+        i++;
+        if (i > 100)
+            break;
+    }
+};
+// custom type guard
+const isNumber = (value) => {
+    return typeof value === 'number'
+        ? true : false;
+};
+// use of the never type
+const numberOrString = (value) => {
+    if (typeof value === 'string')
+        return 'string';
+    if (isNumber(value))
+        return 'number';
+    return createError('This should never happen!');
+};

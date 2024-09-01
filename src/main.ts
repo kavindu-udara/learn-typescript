@@ -1,81 +1,102 @@
-let stringArr = ['one', 'hey', 'dave'];
 
-let guitars = ['Start', 'Les Paul', 5150];
+// Type Aliases
 
-let mixedData = ['EVH', 1984, true];
+type stringOrNumber = string | number
 
-stringArr[0] = '42';
-stringArr.push('hey');
+type stringOrNumberArray = (string | number)[];
 
-guitars[0] = 10;
-guitars.unshift('true');
-
-// guitars = stringArr;
-
-// guitars = mixedData;
-
-let test = [];
-let bands: string[] = [];
-bands.push('Van Halen');
-
-// tuples
-let myTuple : [String, number, boolean] = ['Dave', 42, true];
-let mixed = ['John', 1, false];
-// myTuple[0] = 42;
-
-// ! Objects
-let myObj: object
-myObj = [];
-console.log(typeof myObj);
-myObj = bands;
-myObj = {};
-
-const exampleObj = {
-    prop1: 'Kavindu',
-    prop2: true,
-}
-
-exampleObj.prop1 = 'false';
-exampleObj.prop2 = false;
-
-interface Guitarist  {
+interface Guitarist {
     name: string,
     active?: boolean,
     albums: (string | number)[]
 }
 
-let evh: Guitarist = {
-    name: 'Kavindu',
-    active: false,
-    albums: [1984, 5150, 'OUB12']
+type UserId = stringOrNumber
+
+// interface PostId = stringOrNumber
+
+// ! Literal types
+let myName: 'Kavindu'
+// myName = 'Kavindu'
+
+let userName: 'Kavindu' | 'Udara' | 'Geemi';
+userName = 'Geemi';
+// userName = 'test';
+
+// DRY - Don't Repeat Yourself
+
+// ! functions
+const add = (a: number, b: number): number => {
+    return a + b;
 }
 
-let JP: Guitarist = {
-    name: 'Kavindu',
-    albums: ['I', "II", 'IV']
+const logMsg = (message: any): void => {
+    console.log(message);
 }
 
-evh = JP;
+logMsg('Hellow');
+logMsg(add(2, 4));
+// logMsg(add('a', 5));
 
-// make property optional - prop?
+let subtract = function (c: number, d: number): number {
+    return c - d;
+}
 
-const greetGuitarist = (guitarist: Guitarist) => {
-    if(guitarist.name){
-        return `Hello ${guitarist.name.toUpperCase()}!`;
+type mathFunction = (a: number, b: number) => number;
+// interface mathFunction { (a: number, b: number): number };
+
+let multiply: mathFunction = function (c, d) {
+    return c * d;
+}
+
+logMsg(multiply(2, 2));
+
+// ! Optional parameters
+const addAll = (a: number, b: number, c?: number): number => {
+    if (typeof c !== 'undefined') {
+        return a + b + c;
     }
-    return 'Hellow';
-    // return `Hello ${guitarist.name?.toUpperCase()}!`;
+    return a + b;
 }
 
-// console.log(greetGuitarist(JP));
-
-// ! Enums
-enum Grade{
-    U = 1,
-    D, 
-    C,
-    B,
-    A
+// ! default param value
+const sumAll = (a: number = 10, b:number, c:number=2) : number => {
+    return a+b+c;
 }
 
-console.log(Grade.U);
+// logMsg(addAll(2, 3, 7));
+// logMsg(addAll(2, 3));
+// logMsg(sumAll(2, 3));
+// logMsg(sumAll(undefined, 3));
+
+// ! Rest Parameters
+const total = (a:number,...nums: number[]): number => {
+    return a+ nums.reduce((prev, curr) => prev + curr);
+}
+logMsg(total(1,2));
+
+// ! never type
+const createError = (errMsg:string) : never => {
+    throw new Error(errMsg);
+}
+
+const infinite = () => {
+    let i : number = 1;
+    while(true){
+        i++;
+        if(i > 100) break;
+    }
+}
+
+// custom type guard
+const isNumber = (value: any): boolean => {
+    return typeof value === 'number' 
+    ? true : false
+}
+
+// use of the never type
+const numberOrString = (value:number | string): string => {
+    if(typeof value === 'string') return 'string';
+    if(isNumber(value)) return 'number';
+    return createError('This should never happen!');
+}
