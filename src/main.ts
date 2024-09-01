@@ -1,102 +1,33 @@
+type One = string
+type Two = string | number
+type Three = 'hello'
 
-// Type Aliases
+// ! convert to more or less specific
+let a: One = 'hello';
+let b = a as Two; // less specific
+let c = a as Three; // more specific
 
-type stringOrNumber = string | number
+let d = <One>'word';
+let e = <string | number>'word';
 
-type stringOrNumberArray = (string | number)[];
-
-interface Guitarist {
-    name: string,
-    active?: boolean,
-    albums: (string | number)[]
-}
-
-type UserId = stringOrNumber
-
-// interface PostId = stringOrNumber
-
-// ! Literal types
-let myName: 'Kavindu'
-// myName = 'Kavindu'
-
-let userName: 'Kavindu' | 'Udara' | 'Geemi';
-userName = 'Geemi';
-// userName = 'test';
-
-// DRY - Don't Repeat Yourself
-
-// ! functions
-const add = (a: number, b: number): number => {
-    return a + b;
-}
-
-const logMsg = (message: any): void => {
-    console.log(message);
-}
-
-logMsg('Hellow');
-logMsg(add(2, 4));
-// logMsg(add('a', 5));
-
-let subtract = function (c: number, d: number): number {
-    return c - d;
-}
-
-type mathFunction = (a: number, b: number) => number;
-// interface mathFunction { (a: number, b: number): number };
-
-let multiply: mathFunction = function (c, d) {
-    return c * d;
-}
-
-logMsg(multiply(2, 2));
-
-// ! Optional parameters
-const addAll = (a: number, b: number, c?: number): number => {
-    if (typeof c !== 'undefined') {
-        return a + b + c;
+const addOrConcat = (a: number, b:number, c:'add' | 'concat'): number | string =>{
+    if(c === 'add'){
+        return a + b;
     }
-    return a + b;
+    return ''+a+b;
 }
 
-// ! default param value
-const sumAll = (a: number = 10, b:number, c:number=2) : number => {
-    return a+b+c;
-}
+let myVal:string = addOrConcat(2, 2, 'concat') as string;
+// Be careful! string is returned
+let nextVal:number = addOrConcat(2, 2, 'concat') as number;
 
-// logMsg(addAll(2, 3, 7));
-// logMsg(addAll(2, 3));
-// logMsg(sumAll(2, 3));
-// logMsg(sumAll(undefined, 3));
+10 as unknown;
+(10 as unknown) as string;
 
-// ! Rest Parameters
-const total = (a:number,...nums: number[]): number => {
-    return a+ nums.reduce((prev, curr) => prev + curr);
-}
-logMsg(total(1,2));
+// The DOM
+const img = document.querySelector('img')!;
+const myImg = document.getElementById('#img') as HTMLImageElement; // ! - not null
+const nextImg = <HTMLImageElement>document.getElementById('#img') // this will not work for tsx files
 
-// ! never type
-const createError = (errMsg:string) : never => {
-    throw new Error(errMsg);
-}
-
-const infinite = () => {
-    let i : number = 1;
-    while(true){
-        i++;
-        if(i > 100) break;
-    }
-}
-
-// custom type guard
-const isNumber = (value: any): boolean => {
-    return typeof value === 'number' 
-    ? true : false
-}
-
-// use of the never type
-const numberOrString = (value:number | string): string => {
-    if(typeof value === 'string') return 'string';
-    if(isNumber(value)) return 'number';
-    return createError('This should never happen!');
-}
+img.src;
+myImg.src
