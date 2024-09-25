@@ -1,46 +1,20 @@
 "use strict";
-// ! Index Signatures
-const todayTransactions = {
-    Pizza: -10,
-    Books: -5,
-    Job: 50,
-    Kavindu: 50
+const echo = (arg) => arg;
+const isObj = (arg) => {
+    return (typeof arg == 'object' && !Array.isArray(arg) && arg !== null);
 };
-console.log(todayTransactions.Pizza);
-console.log(todayTransactions['Pizza']);
-let prop = 'Pizza';
-console.log(todayTransactions[prop]);
-const todaysNet = (transactions) => {
-    let total = 0;
-    for (const transaction in transactions) {
-        total += transactions[transaction];
+console.log(isObj(true));
+console.log(isObj('john'));
+console.log(isObj([1, 2, 3]));
+console.log(isObj({ name: 'john' }));
+console.log(isObj(null));
+const isTrue = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false };
     }
-    return total;
+    if (isObj(arg) && !Object.keys(arg).length) {
+        return { arg, is: false };
+    }
+    return { arg, is: !!arg };
 };
-console.log(todaysNet(todayTransactions));
-// todayTransactions.Pizza = 40;
-console.log(todayTransactions['Kavindu']);
-const student = {
-    name: "Doug",
-    GPA: 3.5,
-    classes: [100, 200]
-};
-for (const key in student) {
-    console.log(`${key}: ${student[key]}`);
-}
-Object.keys(student).map(key => {
-    console.log(student[key]);
-});
-const logStudentKey = (student, key) => {
-    console.log(`Student ${key}: ${student[key]}`);
-};
-logStudentKey(student, 'GPA');
-logStudentKey(student, 'name');
-const monthlyIncomes = {
-    salary: 500,
-    bonus: 100,
-    sidehustle: 250
-};
-for (const revenue in monthlyIncomes) {
-    console.log(monthlyIncomes[revenue]);
-}
+// ! Stopped at 3:13:20
